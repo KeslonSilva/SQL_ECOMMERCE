@@ -1,0 +1,84 @@
+CREATE DATABASE ECOMMERCE;
+
+USE ECOMMERCE;
+
+CREATE TABLE Cliente (
+    CodCliente INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    Cpf CHAR(30),
+    fk_Endereco_Endereco_PK VARCHAR,
+    Telefone CHAR(30),
+    Nome VARCHAR(100),
+    fk_Pedido_CodPedido_PK VARCHAR,
+    CONSTRAINT fk_Pedido_CodPedido FOREIGN KEY (CodPedido) REFERENCES Pedido (CodPedidoD),
+    CONSTRAINT fk_Endereco_Endereco_PK FOREIGN KEY (Endereco_PK) REFERENCES Endereco (Endereco_PK)
+);
+
+SELECT * FROM Cliente
+
+INSERT INTO Cliente (Cpf, Telefone, Nome) VALUES (10695588699, 31972654254, 'Keslon Silva')
+
+
+CREATE TABLE Endereco (
+    Endereco_PK INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    Rua VARCHAR(100),
+    Numero CHAR(10),
+    Bairro VARCHAR(100),
+    Cidade VARCHAR(100)
+);
+
+SELECT * FROM Endereco
+
+INSERT INTO Endereco (Rua, Numero, Bairro, Cidade) VALUES ('Rua da Americas', 65, 'Nova Granada', 'Tangamandapio')
+
+CREATE TABLE Pedido (
+    CodPedido INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    DataEntrega DATE,
+    NomeProduto VARCHAR(100),
+    QuantidadeProduto CHAR(10),
+    Pagamento VARCHAR(100),
+    fk_Produto_CodProduto int NOT NULL,
+    CONSTRAINT fk_Produto_CodProduto FOREIGN KEY (fk_Produto_CodProduto) REFERENCES Produto (CodProduto)
+
+);
+
+SELECT * FROM Pedido
+
+INSERT INTO Pedido (DataEntrega, NomeProduto, QuantidadeProduto, Pagamento) 
+VALUES ('20231202', 'CupCake Rosa', 10, 'Boleto')
+ 
+
+
+CREATE TABLE Entrega (
+    CodEntrega int NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    Valor FLOAT,
+    Data DATE,
+    Parceiro VARCHAR(100),
+    fk_Pedido_CodPedido INT
+    CONSTRAINT fk_Pedido_CodPedido FOREIGN KEY (fk_Pedido_CodPedido) REFERENCES Pedido (CodPedido)
+);
+ 
+CREATE TABLE Produto (
+    CodProduto int NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    NomeProduto VARCHAR(100),
+    QuantidadeProduto int,
+    PrecoProduto FLOAT,
+    Descricao VARCHAR(255),
+    Categoria VARCHAR(50)
+);
+
+SELECT * FROM Produto
+
+INSERT INTO Produto (NomeProduto, QuantidadeProduto, PrecoProduto, Descricao, Categoria) 
+VALUES ('Cupcake Rosa', 30, 14.4, 'Cup Cake Rosa', 'Cup Cake')
+ 
+
+
+CREATE TABLE Transportadora (
+    CodTransportadora int NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    Nome VARCHAR(100),
+    Valor FLOAT,
+    TempoDeEntrega DATE,
+    fk_Entrega_CodEntrega int
+    CONSTRAINT fk_Entrega_CodEntrega FOREIGN KEY (fk_Entrega_CodEntrega) REFERENCES Entrega (CodEntrega)
+);
+
